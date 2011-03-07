@@ -1,0 +1,31 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
+Welcome to scrabble!
+
+<form action="/search" method="GET">
+<label for="letters">Letters: </label>
+<input type="text" id="letters" name="letters"></input>
+</form>
+
+<div id="result"></div>
+<script>
+$('#letters').keyup(function(event) {
+  
+  var val = $(this).val();
+  
+  if (val) {
+    $("#result").empty()
+    $.ajax({
+      url: "/search",
+      data: {letters: val},
+      success: function(data) { 
+        for (var i in data) {
+          $("#result").append("<div>"+i+"</div")
+        }
+      }
+    });
+  }
+  
+  event.preventDefault();
+  return false;
+});
+</script>
