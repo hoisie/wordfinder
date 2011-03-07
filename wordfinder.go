@@ -102,7 +102,7 @@ func main() {
         }
         word := strings.TrimSpace(line)
         words[word] = 1
-        for i := 0; i < len(word); i++ {
+        for i := 0; i <= len(word); i++ {
             prefixes[word[0:i]] = 1
         }
     }
