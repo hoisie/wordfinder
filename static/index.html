@@ -18,8 +18,9 @@ $('#letters').keyup(function(event) {
       url: "/search",
       data: {letters: val},
       success: function(data) { 
-        for (var i in data) {
-          $("#result").append("<div>"+i+"</div")
+        console.log(data)
+        for (var i = 0; i < data.length; i++) {
+          $("#result").append("<div>"+data[i]+"</div")
         }
       }
     });
