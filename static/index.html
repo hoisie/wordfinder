@@ -8,17 +8,22 @@ Welcome to scrabble!
 
 <div id="result"></div>
 <script>
+
+String.prototype.trim = function () {
+    return this.replace(/^\s*/, "").replace(/\s*$/, "");
+}
+
+var last = "";
+
 $('#letters').keyup(function(event) {
-  
-  var val = $(this).val();
-  
-  if (val) {
+  var val = $(this).val().trim();
+  if (val && val != last) {
+    last = val;
     $("#result").empty()
     $.ajax({
       url: "/search",
       data: {letters: val},
       success: function(data) { 
-        console.log(data)
         for (var i = 0; i < data.length; i++) {
           $("#result").append("<div>"+data[i]+"</div")
         }

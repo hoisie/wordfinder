@@ -37,27 +37,24 @@ func (c Search) perms(prefix string, rest string) {
 }
 
 func search(ctx *web.Context) string {
-    println("le search!!!!")
+
     var search = Search(map[string]int{})
     s := ctx.Params["letters"]
     r := ""
     index := strings.Index(s, "[")
     var reg *regexp.Regexp
     var err os.Error
-    println(index)
     if index > 0 {
         rindex := strings.Index(s, "]")
         if rindex > 0 {
             r = s[index+1 : len(s)-1]
             reg, err = regexp.Compile(r)
             if err != nil {
-                println(err.String())
+                println("Error creating regular expression", err.String())
             }
         }
         s = s[0:index]
     }
-
-    println(s, r)
 
     search.perms("", s)
 
@@ -66,7 +63,6 @@ func search(ctx *web.Context) string {
     //filter results
     for k, _ := range search {
         if reg != nil && !reg.MatchString(k) {
-            println(k, r, reg.MatchString(k))
             continue
         }
         results.Push(k)

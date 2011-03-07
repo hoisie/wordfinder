@@ -26,3 +26,5 @@ Optionally, you can pass a constraint as a regular expression. For instance, if 
     hell
 
 No, I did not create this program to run on my mobile phone while I play Scrabble on the weekends :)
+
+Warning: depending on the word list this program might consume a lot of memory. Also, searches may get slow after about 14 letters, depending your CPU. The word finder is a fairly basic implementation of BFS. 
