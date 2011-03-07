@@ -106,8 +106,8 @@ func main() {
             prefixes[word[0:i]] = 1
         }
     }
-
+    
+    f.Close()
     web.Get("/search", search)
     web.Run("0.0.0.0:8080")
-
 }
