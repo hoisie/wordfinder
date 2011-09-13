@@ -16,6 +16,8 @@ var prefixes = map[string]int{}
 
 type Search map[string]int
 
+var letters = "abcdefghijklmnopqrstuvwxyz"
+
 func (c Search) perms(prefix string, rest string) {
     if _, ok := prefixes[prefix]; !ok {
         return
@@ -30,9 +32,17 @@ func (c Search) perms(prefix string, rest string) {
     }
 
     for i := 0; i < len(rest); i++ {
-        np := prefix + string(rest[i])
-        nr := rest[0:i] + rest[i+1:]
-        c.perms(np, nr)
+        if rest[i] == '?' {
+            for _, w := range letters {
+                np := prefix + string(w)
+                nr := rest[0:i] + rest[i+1:]
+                c.perms(np, nr)
+            }
+        } else {
+            np := prefix + string(rest[i])
+            nr := rest[0:i] + rest[i+1:]
+            c.perms(np, nr)
+        }
     }
 }
 
@@ -83,7 +93,7 @@ func search(ctx *web.Context) string {
 }
 
 func main() {
-    f, err := os.Open("twl.txt", os.O_RDONLY, 0666)
+    f, err := os.Open("twl.txt")
     if err != nil {
         println(err.String())
     }
@@ -106,7 +116,7 @@ func main() {
             prefixes[word[0:i]] = 1
         }
     }
-    
+
     f.Close()
     web.Get("/search", search)
     web.Run("0.0.0.0:8080")
