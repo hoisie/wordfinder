@@ -3,12 +3,11 @@ package main
 import (
     "bufio"
     "bytes"
-    "container/vector"
     "json"
     "os"
     "regexp"
     "strings"
-    "web"
+    "github.com/hoisie/web.go"
 )
 
 var words = map[string]int{}
@@ -68,14 +67,15 @@ func search(ctx *web.Context) string {
 
     search.perms("", s)
 
-    var results vector.StringVector
+    var results []string
 
     //filter results
     for k, _ := range search {
         if reg != nil && !reg.MatchString(k) {
             continue
         }
-        results.Push(k)
+        results = append(results, k)
+
     }
 
     if ctx.Headers.Get("X-Requested-With") == "XMLHttpRequest" {
@@ -119,5 +119,10 @@ func main() {
 
     f.Close()
     web.Get("/search", search)
-    web.Run("0.0.0.0:8080")
+    port := os.Getenv("PORT")
+    web.Config.StaticDir = "static"
+    if port == "" {
+	    port = "8080"
+    }
+    web.Run("0.0.0.0:"+port)
 }
